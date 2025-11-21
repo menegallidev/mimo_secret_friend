@@ -1,12 +1,24 @@
 "use client";
 
-import { CalendarDays, MapPin, Users } from "lucide-react";
+import { CalendarDays, Gift, MapPin, Users } from "lucide-react";
 import {
-    Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import type { SecretFriendEvent } from "@/lib/mock/events";
+
+type EventWithDraw = SecretFriendEvent & {
+    drawResultForMe?: {
+        name: string;
+        nickname?: string;
+    };
+};
 
 function formatDateTime(iso: string) {
     return new Date(iso).toLocaleString("pt-BR", {
@@ -25,9 +37,12 @@ export function EventDetailsModal({
 }: {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    event: SecretFriendEvent | null;
+    event: EventWithDraw | null;
 }) {
     if (!event) return null;
+
+    const hasDrawHappened = new Date(event.drawDate).getTime() <= Date.now();
+    const drawn = event.drawResultForMe;
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -77,6 +92,36 @@ export function EventDetailsModal({
                                     </Button>
                                 )}
                             </div>
+
+                            <Separator className="my-2" />
+
+                            <div className="rounded-md border bg-muted/40 p-3">
+                                <div className="mb-2 flex items-center gap-2 font-medium">
+                                    <Gift className="h-4 w-4" />
+                                    <span>Seu amigo secreto</span>
+                                </div>
+
+                                {drawn ? (
+                                    <div className="flex flex-col gap-1">
+                                        <span className="text-base font-semibold text-foreground">
+                                            {drawn.name}
+                                        </span>
+                                        {drawn.nickname && (
+                                            <span className="text-sm text-muted-foreground">
+                                                @{drawn.nickname}
+                                            </span>
+                                        )}
+                                    </div>
+                                ) : hasDrawHappened ? (
+                                    <p className="text-sm text-muted-foreground">
+                                        O sorteio já foi realizado. Aguarde seu resultado aparecer aqui.
+                                    </p>
+                                ) : (
+                                    <p className="text-sm text-muted-foreground">
+                                        O sorteio ainda não aconteceu. Volte depois da data do sorteio.
+                                    </p>
+                                )}
+                            </div>
                         </CardContent>
                     </Card>
 
@@ -99,7 +144,9 @@ export function EventDetailsModal({
                                 >
                                     <span className="font-medium">{u.name}</span>
                                     {u.nickname && (
-                                        <span className="text-muted-foreground">@{u.nickname}</span>
+                                        <span className="text-muted-foreground">
+                                            @{u.nickname}
+                                        </span>
                                     )}
                                 </div>
                             ))}

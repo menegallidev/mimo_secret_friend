@@ -14,6 +14,7 @@ export type SecretFriendEvent = {
     location: string;
     users: EventUser[];
     isUserInEvent: boolean; // se o usuário logado já está no evento
+    drawResultForMe: any
 };
 
 export const mockEvents: SecretFriendEvent[] = [
@@ -30,6 +31,7 @@ export const mockEvents: SecretFriendEvent[] = [
             { id: "u2", name: "Ana Paula", nickname: "Aninha" },
             { id: "u3", name: "João Victor" },
         ],
+        drawResultForMe: { name: "Ana Paula", nickname: "Aninha" }
     },
     {
         id: "2",
@@ -43,5 +45,6 @@ export const mockEvents: SecretFriendEvent[] = [
             { id: "u4", name: "Marcos Silva" },
             { id: "u5", name: "Luana Costa" },
         ],
+        drawResultForMe: false
     },
 ];

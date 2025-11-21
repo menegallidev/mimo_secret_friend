@@ -5,8 +5,10 @@ import { EventCard } from "@/components/events/event-card";
 import { EmptyEventsState } from "@/components/events/empty-events-state";
 import { EventDetailsModal } from "@/components/events/event-details-modal";
 import type { SecretFriendEvent } from "@/lib/mock/events";
+import { useRouter } from "next/navigation";
 
 export function DashboardClient({ events }: { events: SecretFriendEvent[] }) {
+    const router = useRouter();
     const [selectedEvent, setSelectedEvent] = useState<SecretFriendEvent | null>(null);
     const [openModal, setOpenModal] = useState(false);
 
@@ -15,6 +17,10 @@ export function DashboardClient({ events }: { events: SecretFriendEvent[] }) {
     function handleViewDetails(event: SecretFriendEvent) {
         setSelectedEvent(event);
         setOpenModal(true);
+    }
+
+    function handleEditEvent(event: SecretFriendEvent) {
+        router.push(`/events/edit?id=${event.id}`);
     }
 
     return (
@@ -32,9 +38,10 @@ export function DashboardClient({ events }: { events: SecretFriendEvent[] }) {
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {events.map((event) => (
                         <EventCard
-                            key={event.id}
                             event={event}
                             onViewDetails={handleViewDetails}
+                            isAdmin={true}
+                            onEditEvent={handleEditEvent}
                         />
                     ))}
                 </div>

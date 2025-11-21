@@ -1,4 +1,4 @@
-import { CalendarDays, MapPin, Users } from "lucide-react";
+import { CalendarDays, MapPin, Users, Pencil } from "lucide-react";
 import {
     Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 } from "@/components/ui/card";
@@ -16,9 +16,13 @@ function formatDate(iso: string) {
 export function EventCard({
     event,
     onViewDetails,
+    isAdmin = false,
+    onEditEvent,
 }: {
     event: SecretFriendEvent;
     onViewDetails: (event: SecretFriendEvent) => void;
+    isAdmin?: boolean;
+    onEditEvent?: (event: SecretFriendEvent) => void;
 }) {
     return (
         <Card className="flex flex-col">
@@ -53,7 +57,18 @@ export function EventCard({
                 </div>
             </CardContent>
 
-            <CardFooter className="mt-auto flex justify-end">
+            <CardFooter className="mt-auto flex justify-end gap-2">
+                {isAdmin && (
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        aria-label="Editar evento"
+                        onClick={() => onEditEvent?.(event)}
+                    >
+                        <Pencil className="h-4 w-4" />
+                    </Button>
+                )}
+
                 <Button variant="outline" onClick={() => onViewDetails(event)}>
                     Ver detalhes
                 </Button>
