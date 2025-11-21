@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { User, Pencil, Save, X } from "lucide-react";
+import { User, Pencil, Save, X, ArrowLeft } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import { CpfInput } from "@/components/shared/CpfInput";
 import { PasswordInput } from "@/components/shared/PasswordInput";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Link from "next/link";
 
 type Profile = {
     id: string;
@@ -68,11 +69,19 @@ export function ProfileClient() {
     return (
         <div className="space-y-6">
             <header className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Meu perfil</h1>
-                    <p className="text-sm text-muted-foreground">
-                        Veja e edite suas informações.
-                    </p>
+                <div className="flex items-center gap-3">
+                    <Button asChild variant="ghost" size="icon" aria-label="Voltar">
+                        <Link href="/dashboard">
+                            <ArrowLeft className="h-5 w-5" />
+                        </Link>
+                    </Button>
+
+                    <div>
+                        <h1 className="text-2xl font-bold tracking-tight">Meu perfil</h1>
+                        {/* <p className="text-sm text-muted-foreground">
+                            Veja e edite suas informações.
+                        </p> */}
+                    </div>
                 </div>
 
                 {!isEditing ? (
